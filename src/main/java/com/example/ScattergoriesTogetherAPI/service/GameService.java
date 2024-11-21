@@ -17,7 +17,11 @@ import com.swabunga.spell.event.SpellCheckEvent;
 import com.swabunga.spell.event.SpellCheckListener;
 import com.swabunga.spell.event.SpellChecker;
 
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +60,9 @@ public class GameService implements SpellCheckListener{
     @Autowired
     private NotificationService notificationService;
 
+    @Value("classpath:words.utf-8.txt")
+    private Resource wordFile;
+
     private SpellChecker spellChecker;
 
     private static final Set<String> ARTICLES = new HashSet<>(Arrays.asList("A", "An", "The"));
@@ -64,7 +71,16 @@ public class GameService implements SpellCheckListener{
     private final int ROUND_DURATION_SECONDS = 60;
 
     public GameService() throws IOException{
-        SpellDictionaryHashMap dictionary = new SpellDictionaryHashMap(new File("src\\main\\resources\\words.utf-8.txt"));
+        this.spellChecker = null;
+    }
+
+    @PostConstruct
+    public void initialize() throws IOException{
+        if (!wordFile.exists()) {
+            throw new IOException("Resource file not found: " + wordFile.getFilename());
+        }
+
+        SpellDictionaryHashMap dictionary = new SpellDictionaryHashMap(wordFile.getFile());
         spellChecker = new SpellChecker(dictionary);
         spellChecker.addSpellCheckListener(this);
     }
