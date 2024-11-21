@@ -55,7 +55,7 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.GET, "/*").permitAll()
-                .requestMatchers(HttpMethod.POST, "/*").authenticated()
+                .requestMatchers(HttpMethod.POST, "/*").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/*").permitAll()
                 .requestMatchers(HttpMethod.GET, "/*/{id}").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/*/{id}").permitAll()

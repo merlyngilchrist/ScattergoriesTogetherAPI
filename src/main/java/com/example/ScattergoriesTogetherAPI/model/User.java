@@ -1,6 +1,12 @@
 package com.example.ScattergoriesTogetherAPI.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "users")
 public class User {
+    @Id
+    private String id;
     private String username;
     private String password;
     private int recordScore;
@@ -8,11 +14,9 @@ public class User {
 
     public User(){}
 
-    public User(String username, String password, int recordScore, int numberOfWins) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.recordScore = recordScore;
-        this.numberOfWins = numberOfWins;
 
     }
 
