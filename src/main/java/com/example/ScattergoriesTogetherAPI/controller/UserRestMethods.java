@@ -4,7 +4,6 @@ import com.example.ScattergoriesTogetherAPI.model.User;
 import org.antlr.v4.runtime.misc.Pair;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
