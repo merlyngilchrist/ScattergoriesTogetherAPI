@@ -64,7 +64,7 @@ public class GameService implements SpellCheckListener{
     private final int ROUND_DURATION_SECONDS = 60;
 
     public GameService() throws IOException{
-        SpellDictionaryHashMap dictionary = new SpellDictionaryHashMap(new File("ScattergoriesTogether\\src\\main\\resources\\words.utf-8.txt"));
+        SpellDictionaryHashMap dictionary = new SpellDictionaryHashMap(new File("src\\main\\resources\\words.utf-8.txt"));
         spellChecker = new SpellChecker(dictionary);
         spellChecker.addSpellCheckListener(this);
     }

@@ -8,12 +8,21 @@ import com.example.ScattergoriesTogetherAPI.repository.UserRepository;
 
 @Service
 public class UserService {
-    @Autowired
-    private static UserRepository userRepository;
+    
+    private UserRepository userRepository;
 
-    public static User addToCollection(String username, String pass) {
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User addToCollection(String username, String pass) {
         User newUser = new User(username, pass);
         return userRepository.save(newUser); // Saves to the collection
+    }
+
+    public User findUser(String username) {
+        return userRepository.findByUsername(username).get();
     }
 
 

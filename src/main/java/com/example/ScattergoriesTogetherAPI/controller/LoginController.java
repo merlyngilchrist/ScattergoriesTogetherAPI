@@ -3,8 +3,7 @@ package com.example.ScattergoriesTogetherAPI.controller;
 import com.example.ScattergoriesTogetherAPI.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("")

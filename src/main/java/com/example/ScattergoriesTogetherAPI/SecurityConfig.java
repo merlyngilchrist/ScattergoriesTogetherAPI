@@ -1,6 +1,5 @@
 package com.example.ScattergoriesTogetherAPI;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.security.config.Customizer;
 
-//import com.example.Controllers.UserRestSQL;
+
 
 @Configuration
 @EnableWebSecurity
@@ -54,8 +53,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.GET, "/*").permitAll()
-                .requestMatchers(HttpMethod.POST, "/*").permitAll()
+                .requestMatchers(HttpMethod.GET).permitAll()
+                .requestMatchers(HttpMethod.POST).permitAll()
                 .requestMatchers(HttpMethod.PUT, "/*").permitAll()
                 .requestMatchers(HttpMethod.GET, "/*/{id}").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/*/{id}").permitAll()
