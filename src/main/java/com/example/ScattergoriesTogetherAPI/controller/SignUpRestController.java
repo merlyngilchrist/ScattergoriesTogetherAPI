@@ -1,28 +1,42 @@
 package com.example.ScattergoriesTogetherAPI.controller;
 
 import com.example.ScattergoriesTogetherAPI.model.User;
-import com.example.ScattergoriesTogetherAPI.repository.UserRepository;
 import com.example.ScattergoriesTogetherAPI.service.UserService;
-
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+
 @RestController
 @RequestMapping("/signup")
 public class SignUpRestController {
+
+    private final UserService userService;
+
+    @Autowired
+    public SignUpRestController(UserService userService) {
+        this.userService = userService;
+    }
+
+
+
     @RequestMapping(value = "/create/{username}/{password}",method = RequestMethod.POST)
-    public static boolean signup(@PathVariable String username,@PathVariable String password, HttpServletRequest request) {
+    public String signup(@PathVariable String username,@PathVariable String password, HttpServletRequest request) {
+        User user = null;
         try{
-            UserService.addToCollection(username, password);
+            try{
+            user = userService.findUser(username);
+            if(user != null) return "User already exist";
+            }catch(Exception l){
+                
+            }
+
+            userService.addToCollection(username, password);
         }catch(Exception e){
             e.printStackTrace();
-            return false;
+            return "something went wrong";
         }
         
-        
-        // Redirect to dashboard or home page
-        return true;
+        return "User Made";
     }
 }

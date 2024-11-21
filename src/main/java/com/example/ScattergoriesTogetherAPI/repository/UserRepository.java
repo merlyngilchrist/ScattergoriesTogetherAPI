@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserRepository extends MongoRepository<User, String>, UserRepositoryCustom{
     //Find a user by username
-    Optional<User> findByUsername(String username); 
     
-
-
+    Optional<User> findByUsername(String username); 
 }
