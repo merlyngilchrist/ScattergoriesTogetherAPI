@@ -1,10 +1,12 @@
-FROM openjdk:23-jdk-slim
-
+# Stage 1: Build
+FROM openjdk:23-jdk-slim AS builder
 WORKDIR /ScattergoriesTogetherAPI
+COPY . .
+RUN ./mvnw package
 
-COPY target/*.jar ScattergoriesTogetherAPI.jar
-
-
+# Stage 2: Run
+FROM openjdk:23-jdk-slim 
+WORKDIR /ScattergoriesTogetherAPI
+COPY --from=builder /ScattergoriesTogetherAPI/target/*.jar ScattergoriesTogetherAPI.jar
 EXPOSE 8080
-
-ENTRYPOINT ["java", "-jar", "ScattergoriesTogetherAPI-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "ScattergoriesTogetherAPI.jar"]
