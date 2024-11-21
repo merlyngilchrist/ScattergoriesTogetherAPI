@@ -27,6 +27,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -75,16 +79,18 @@ public class GameService implements SpellCheckListener{
     }
 
     @PostConstruct
-    public void initialize() throws IOException{
-        if (!wordFile.exists()) {
-            throw new IOException("Resource file not found: " + wordFile.getFilename());
+    public void initialize(){
+        try{
+            Path tempFile = Files.createTempFile("words", ".txt");
+            Files.copy(wordFile.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
+            SpellDictionaryHashMap dictionary = new SpellDictionaryHashMap(tempFile.toFile());
+            spellChecker = new SpellChecker(dictionary);
+            spellChecker.addSpellCheckListener(this);
+        }catch (IOException e){
+            throw new RuntimeException("Failed to initialize GameService: unable to load word file", e);
         }
-
-        SpellDictionaryHashMap dictionary = new SpellDictionaryHashMap(wordFile.getFile());
-        spellChecker = new SpellChecker(dictionary);
-        spellChecker.addSpellCheckListener(this);
     }
-
+    
     public boolean isResponseValid(String response, String requiredLetter){
         //Step 1: Tokenize and remove articles
         String[] words = response.split("\\s");
