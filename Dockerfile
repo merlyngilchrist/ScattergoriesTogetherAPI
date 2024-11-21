@@ -2,7 +2,8 @@
 FROM openjdk:23-jdk-slim AS builder
 WORKDIR /ScattergoriesTogetherAPI
 COPY . .
-RUN ./mvn package
+RUN chmod +x mvnw
+RUN ./mvnw package
 
 # Stage 2: Run
 FROM openjdk:23-jdk-slim 
