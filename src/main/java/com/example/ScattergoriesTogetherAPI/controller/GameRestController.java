@@ -1,5 +1,6 @@
 package com.example.ScattergoriesTogetherAPI.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,8 +32,11 @@ public class GameRestController {
     }
 
     @PostMapping("/create")
-    public String createGame(@RequestParam String hostUsername){
-        return gameService.createGame(hostUsername);
+    public Map<String, String> createGame(@RequestParam String hostUsername){
+        String gameCode = gameService.createGame(hostUsername);
+        Map<String, String> response = new HashMap<>();
+        response.put("gameId", gameCode);
+        return response;
     }
 
     @PostMapping("/{gameCode}/start")
