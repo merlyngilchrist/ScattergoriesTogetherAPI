@@ -24,6 +24,12 @@ public class GameRestController {
 
     private GameRepository gameRepository;
 
+    @GetMapping("/{gameCode}")
+    public Game getGameDetails(@PathVariable String gameCode){
+        Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
+        return gameOpt.orElseThrow(() -> new IllegalArgumentException("Game not found"));
+    }
+
     @PostMapping("/create")
     public String createGame(@RequestParam String hostUsername){
         return gameService.createGame(hostUsername);
