@@ -2,6 +2,8 @@ package com.example.ScattergoriesTogetherAPI.controller;
 
 import com.example.ScattergoriesTogetherAPI.model.User;
 import com.example.ScattergoriesTogetherAPI.service.UserService;
+import com.mongodb.DuplicateKeyException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +26,12 @@ public class SignUpRestController {
     public String signup(@PathVariable String username,@PathVariable String password, HttpServletRequest request) {
         User user = null;
         try{
-            try{
-            user = userService.findUser(username);
-            if(user != null) return "User already exist";
-            }catch(Exception l){
-                
-            }
-
             userService.addToCollection(username, password);
+        }catch(DuplicateKeyException d){
+            return "User already exist";
         }catch(Exception e){
             e.printStackTrace();
-            return "something went wrong";
+            return "Something went wrong";
         }
         
         return "User Made";
