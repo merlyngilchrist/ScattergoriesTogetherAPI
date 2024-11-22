@@ -16,7 +16,7 @@ import com.example.ScattergoriesTogetherAPI.repository.GameRepository;
 import com.example.ScattergoriesTogetherAPI.service.GameService;
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/games")
 public class GameRestController {
 
     @Autowired 
@@ -29,7 +29,7 @@ public class GameRestController {
         return gameService.createGame(hostUsername);
     }
 
-    @PostMapping("/start")
+    @PostMapping("/{gameCode}/start")
     public void startGame(@RequestParam String gameCode){
         gameService.startGame(gameCode);
     }

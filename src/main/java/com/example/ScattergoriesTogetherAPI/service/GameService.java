@@ -222,7 +222,7 @@ public class GameService implements SpellCheckListener{
                 game.setCurrentLetter(String.valueOf(letter));
 
                 //Fetch random prompts for the round
-                List<Prompt> prompts = promptRepository.findRandomPrompts(PageRequest.of(0, 5));
+                List<Prompt> prompts = promptRepository.findRandomPrompts(PageRequest.of(0, 12));
                 game.setCurrentPrompts(prompts.stream().map(Prompt::getPromptText).collect(Collectors.toList()));
 
                 game.setStatus("IN_PROGRESS");
