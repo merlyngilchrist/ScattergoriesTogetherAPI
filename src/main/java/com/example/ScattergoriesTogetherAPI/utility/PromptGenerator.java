@@ -6,30 +6,25 @@ import java.util.Random;
 public class PromptGenerator {
 
 
-    private static String[] prompts = {
-            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-    };
 
 
 
-
-    public static String[] GeneratePromptList(){
+    public static int[] GeneratePromptList(int total){
         Random rand = new Random();
-        ArrayList<String> returnPrompts = new ArrayList<>();
-        String prompt;
+        ArrayList<Integer> returnPrompts = new ArrayList<>();
         while(returnPrompts.size() < 12){
-            prompt = prompts[rand.nextInt(prompts.length -1)];
-
-            if(returnPrompts.contains(prompt)){
-                continue;
+            int newInt = rand.nextInt(total) + 1;
+            if(!returnPrompts.contains(newInt)){
+                returnPrompts.add(newInt);
             }
-            returnPrompts.add(prompt);
         }
 
+        int[] result = new int[returnPrompts.size()];
+        for (int i = 0; i < returnPrompts.size(); i++) {
+            result[i] = returnPrompts.get(i);
+        }
 
-
-        return returnPrompts.toArray(new String[returnPrompts.size()]);
+        return result;
     }
 
 
