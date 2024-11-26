@@ -1,11 +1,13 @@
 package com.example.ScattergoriesTogetherAPI.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +58,17 @@ public class GameRestController {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game not found or not joinable.");
+        }
+    }
+
+    @GetMapping("/{gameCode}/players")
+    public ResponseEntity<List<String>> getPlayers(@PathVariable String gameCode){
+        Optional<Game> gameOpt = gameService.getGameByCode(gameCode);
+        if (gameOpt.isPresent()) {
+            Game game = gameOpt.get();
+            return ResponseEntity.ok(game.getPlayers());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

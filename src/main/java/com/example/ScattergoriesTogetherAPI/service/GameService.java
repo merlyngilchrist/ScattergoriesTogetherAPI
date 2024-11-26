@@ -210,6 +210,10 @@ public class GameService implements SpellCheckListener{
         return false;
     }
 
+    public Optional<Game> getGameByCode(String gameCode){
+        return gameRepository.findByGameCode(gameCode);
+    }
+
     public void startRound(String gameCode){
         Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
         if (gameOpt.isPresent()) {
