@@ -55,7 +55,7 @@ public class GameRestController {
         if (success) {
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game not found or not joinable.")
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game not found or not joinable.");
         }
     }
 
