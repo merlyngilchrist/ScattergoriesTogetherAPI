@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,8 @@ public class GameRestController {
     }
 
     @PostMapping("/create")
-    public Map<String, String> createGame(@RequestParam String hostUsername){
+    public Map<String, String> createGame(@RequestParam Map<String, String> requestBody){
+        String hostUsername = requestBody.get("hostUsername");
         String gameCode = gameService.createGame(hostUsername);
         Map<String, String> response = new HashMap<>();
         response.put("gameId", gameCode);
@@ -45,7 +47,8 @@ public class GameRestController {
     }
 
     @PostMapping("/{gameCode}/join")
-    public boolean joinGame(@PathVariable String gameCode, @RequestParam String username){
+    public boolean joinGame(@PathVariable String gameCode, @RequestBody Map<String, String> requestBody){
+        String username = requestBody.get("username");
         return gameService.joinGame(gameCode, username);
     }
 
