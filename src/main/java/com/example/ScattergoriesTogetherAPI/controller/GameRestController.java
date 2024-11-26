@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,9 +49,14 @@ public class GameRestController {
     }
 
     @PostMapping("/{gameCode}/join")
-    public boolean joinGame(@PathVariable String gameCode, @RequestBody Map<String, String> requestBody){
-        String username = requestBody.get("username");
-        return gameService.joinGame(gameCode, username);
+    public ResponseEntity<?> joinGame(@PathVariable String gameCode, @RequestBody Map<String, String> payload){
+        String username = payload.get("username");
+        boolean success = gameService.joinGame(gameCode, username);
+        if (success) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game not found or not joinable.")
+        }
     }
 
     @PostMapping("/{gameCode}/startRound")
