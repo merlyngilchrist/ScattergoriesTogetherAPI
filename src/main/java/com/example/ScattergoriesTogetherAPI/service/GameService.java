@@ -231,7 +231,13 @@ public class GameService implements SpellCheckListener{
 
                 // Get propmt for this round
                 try{
-                    game.setCurrentPrompts(promptRestController.GeneratePrompt());
+                    String[] prompts = promptRestController.GeneratePrompt();
+                    if(prompts != null){
+                        game.setCurrentPrompts(prompts);
+                    }else{
+                        System.out.println("FUCKIN IJIT");
+                    }
+                    
                 }catch (Exception e){
                     System.out.println("Romero's a stupid idiot");
                 }
