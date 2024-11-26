@@ -52,7 +52,12 @@ public class GameRestController {
 
     @PostMapping("/{gameCode}/join")
     public ResponseEntity<?> joinGame(@PathVariable String gameCode, @RequestBody Map<String, String> payload){
+        System.out.println("Game Code: " + gameCode);
+        System.out.println("Payload: " + payload);
         String username = payload.get("username");
+        if (username == null || username.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
+        }
         boolean success = gameService.joinGame(gameCode, username);
         if (success) {
             return ResponseEntity.ok().build();
