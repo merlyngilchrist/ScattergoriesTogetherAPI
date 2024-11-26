@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface GameRepository extends MongoRepository<Game, String>, GameRepositoryCustom{
     //Find a game by its game code
+    @Query("{'gameCode': ?0}")
     Optional<Game> findByGameCode(String gameCode);
 
     //Find active games
