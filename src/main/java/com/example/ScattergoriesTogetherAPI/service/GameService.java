@@ -230,7 +230,11 @@ public class GameService implements SpellCheckListener{
                 game.setCurrentLetter(String.valueOf(letter));
 
                 // Get propmt for this round
-                game.setCurrentPrompts(promptRestController.GeneratePrompt());
+                try{
+                    game.setCurrentPrompts(promptRestController.GeneratePrompt());
+                }catch (Exception e){
+                    System.out.println("Romero's a stupid idiot");
+                }
 
                 game.setStatus("IN_PROGRESS");
                 game.setCurrentRound(currentRound + 1);
