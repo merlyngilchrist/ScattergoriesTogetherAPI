@@ -46,7 +46,7 @@ public class GameRestController {
     }
 
     @PostMapping("/{gameCode}/start")
-    public void startGame(@RequestParam String gameCode){
+    public void startGame(@PathVariable String gameCode){
         gameService.startGame(gameCode);
     }
 
