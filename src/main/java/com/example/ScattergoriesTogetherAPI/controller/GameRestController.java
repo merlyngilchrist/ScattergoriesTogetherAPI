@@ -28,6 +28,7 @@ public class GameRestController {
     @Autowired 
     private GameService gameService;
 
+    @Autowired
     private GameRepository gameRepository;
 
     @GetMapping("/{gameCode}")
