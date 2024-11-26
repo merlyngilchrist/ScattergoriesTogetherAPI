@@ -28,6 +28,9 @@ public class Game {
         this.hostUsername = hostUsername;
         this.status = "LOBBY";
         this.currentRound = 0;
+        this.currentLetter = null;
+        this.currentPrompts = null;
+        this.responses = null;
     }
 
     public String getId() {
