@@ -46,8 +46,15 @@ public class GameRestController {
     }
 
     @PostMapping("/{gameCode}/start")
-    public void startGame(@PathVariable String gameCode){
-        gameService.startGame(gameCode);
+    public ResponseEntity startGame(@PathVariable String gameCode){
+        try {
+            gameService.startGame(gameCode);
+            Map<String, String> response = new HashMap<>();
+            response.put("success", "true");
+            return ResponseEntity.ok(response);
+        } catch {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PostMapping("/{gameCode}/join")
