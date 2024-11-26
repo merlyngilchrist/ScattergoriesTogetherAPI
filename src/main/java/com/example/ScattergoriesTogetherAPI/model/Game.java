@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "games")
@@ -28,9 +29,9 @@ public class Game {
         this.hostUsername = hostUsername;
         this.status = "LOBBY";
         this.currentRound = 0;
-        this.currentLetter = null;
-        this.currentPrompts = null;
-        this.responses = null;
+        this.currentLetter = "";
+        this.currentPrompts = new String[12];
+        this.responses = new ArrayList<Response>();
     }
 
     public String getId() {
