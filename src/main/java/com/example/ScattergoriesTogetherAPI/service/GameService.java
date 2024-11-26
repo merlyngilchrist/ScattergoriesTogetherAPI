@@ -181,6 +181,7 @@ public class GameService implements SpellCheckListener{
         String gameCode = generateGameCode();
         Game game = new Game(gameCode, hostUsername);
         game.setPlayersIDs(new ArrayList<>());
+        game.getPlayers().add(hostUsername);
         gameRepository.save(game);
         return gameCode;
     }
