@@ -31,9 +31,17 @@ public class GameRestController {
     private GameRepository gameRepository;
 
     @GetMapping("/{gameCode}")
-    public Game getGameDetails(@PathVariable String gameCode){
-        Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
-        return gameOpt.orElseThrow(() -> new IllegalArgumentException("Game not found"));
+    public ResponseEntity<?> getGameDetails(@PathVariable String gameCode){
+        try{
+            Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
+            if (gameOpt.isPresent()) {
+                return ResponseEntity.ok(gameOpt.get());
+            } else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Game not found");
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occured: " + e.getMessage());
+        }
     }
 
     @PostMapping("/create")
