@@ -52,7 +52,7 @@ public class GameRestController {
             Map<String, String> response = new HashMap<>();
             response.put("success", "true");
             return ResponseEntity.ok(response);
-        } catch {
+        } catch(Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
