@@ -2,6 +2,8 @@ package com.example.ScattergoriesTogetherAPI.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.lang.reflect.Array;
 import java.util.List;
 
 @Document(collection = "games")
@@ -16,7 +18,7 @@ public class Game {
     private String status;
 
     private List<String> players;
-    private List<String> currentPrompts;
+    private String[] currentPrompts;
     private List<Response> responses;
 
     public Game(){}
@@ -84,11 +86,11 @@ public class Game {
         this.status = status;
     }
 
-    public List<String> getCurrentPrompts() {
+    public String[] getCurrentPrompts() {
         return currentPrompts;
     }
 
-    public void setCurrentPrompts(List<String> currentPrompts) {
+    public void setCurrentPrompts(String[] currentPrompts) {
         this.currentPrompts = currentPrompts;
     }
 

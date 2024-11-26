@@ -1,5 +1,6 @@
 package com.example.ScattergoriesTogetherAPI.service;
 
+import com.example.ScattergoriesTogetherAPI.controller.PromptRestController;
 import com.example.ScattergoriesTogetherAPI.model.Game;
 import com.example.ScattergoriesTogetherAPI.model.Player;
 import com.example.ScattergoriesTogetherAPI.model.Prompt;
@@ -63,6 +64,8 @@ public class GameService implements SpellCheckListener{
 
     @Autowired
     private NotificationService notificationService;
+
+    private PromptRestController promptRestController;
 
     @Value("classpath:words.utf-8.txt")
     private Resource wordFile;
@@ -225,6 +228,9 @@ public class GameService implements SpellCheckListener{
                 //Roll a letter for this round
                 char letter = rollLetter();
                 game.setCurrentLetter(String.valueOf(letter));
+
+                // Get propmt for this round
+                game.setCurrentPrompts(promptRestController.GeneratePrompt());
 
                 game.setStatus("IN_PROGRESS");
                 game.setCurrentRound(currentRound + 1);
