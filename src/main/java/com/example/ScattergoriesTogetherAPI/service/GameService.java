@@ -240,6 +240,7 @@ public class GameService implements SpellCheckListener{
                     
                 }catch (Exception e){
                     System.out.println("Romero's a stupid idiot");
+                    e.printStackTrace();
                 }
 
                 game.setStatus("IN_PROGRESS");
