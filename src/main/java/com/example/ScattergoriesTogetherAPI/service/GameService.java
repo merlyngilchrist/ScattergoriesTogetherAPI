@@ -12,6 +12,7 @@ import com.example.ScattergoriesTogetherAPI.repository.PromptRepository;
 import com.example.ScattergoriesTogetherAPI.repository.ResponseRepository;
 import com.example.ScattergoriesTogetherAPI.repository.UserRepository;
 import com.example.ScattergoriesTogetherAPI.repository.VoteRepository;
+import com.example.ScattergoriesTogetherAPI.utility.PromptGenerator;
 import com.swabunga.spell.engine.SpellDictionaryHashMap;
 import com.swabunga.spell.engine.Word;
 import com.swabunga.spell.event.SpellCheckEvent;
@@ -53,8 +54,6 @@ public class GameService implements SpellCheckListener{
     @Autowired
     private GameRepository gameRepository;
 
-    @Autowired
-    private PromptRepository promptRepository;
 
     @Autowired
     private ResponseRepository responseRepository;
@@ -65,9 +64,9 @@ public class GameService implements SpellCheckListener{
     @Autowired
     private NotificationService notificationService;
 
-    private PromptService promptService = new PromptService();
+    @Autowired
+    private PromptService promptService;
 
-    private PromptRestController promptRestController = new PromptRestController(promptService);
 
     @Value("classpath:words.utf-8.txt")
     private Resource wordFile;
@@ -233,12 +232,16 @@ public class GameService implements SpellCheckListener{
 
                 // Get propmt for this round
                 try{
-                    String[] prompts = promptRestController.GeneratePrompt();
-                    if(prompts != null){
-                        game.setCurrentPrompts(prompts);
-                    }else{
-                        System.out.println("FUCKIN IJIT");
+                    String[] rList = new String[12];
+                    int[] promptIDs = PromptGenerator.GeneratePromptList(110);
+                    for (int i = 0; i < promptIDs.length; i++) {
+                        rList[i] = promptService.getPrompt(promptIDs[i]).getCategory();
                     }
+
+                    
+                    
+                    game.setCurrentPrompts(rList);
+                    
                     
                 }catch (Exception e){
                     System.out.println("Romero's a stupid idiot");
