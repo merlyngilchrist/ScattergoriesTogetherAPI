@@ -14,6 +14,8 @@ public class PromptRestController {
 
     private final PromptService promptService;
 
+
+
     @Autowired
     public PromptRestController(PromptService promptService) {
         this.promptService = promptService;
@@ -29,6 +31,8 @@ public class PromptRestController {
 
         return rList;
     }
+
+    
 
     @RequestMapping(value = "/get",method = RequestMethod.GET)
     public String GetPrompt() {

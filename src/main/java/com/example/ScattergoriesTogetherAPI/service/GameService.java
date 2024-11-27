@@ -65,7 +65,9 @@ public class GameService implements SpellCheckListener{
     @Autowired
     private NotificationService notificationService;
 
-    private PromptRestController promptRestController;
+    private PromptService promptService = new PromptService();
+
+    private PromptRestController promptRestController = new PromptRestController(promptService);
 
     @Value("classpath:words.utf-8.txt")
     private Resource wordFile;
