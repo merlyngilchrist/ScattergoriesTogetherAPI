@@ -34,7 +34,8 @@ public class LoginRestController {
         }
         
         
-
+        HttpSession session = request.getSession();
+        session.setAttribute("username", username);
         return "Success";
     }
 
@@ -57,11 +58,20 @@ public class LoginRestController {
         return currentUser;
     }
 
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    public User getUserProfile(@PathVariable String username, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session == null || !username.equals(session.getAttribute("username"))) {
+            throw new RuntimeException("Unathorized access");
+        }
+        return userService.findUser(username);
+    }
+
     @RequestMapping(value = "/logout",method = RequestMethod.GET)
     public static String logout(HttpSession session) {
         if (session != null) {
             session.invalidate(); // Invalidate session
         }
-        return "redirect:/login"; // Redirect to login page
+        return "Success"; // Redirect to login page
     }
 }

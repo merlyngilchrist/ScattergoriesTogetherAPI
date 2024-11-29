@@ -94,6 +94,20 @@ public class GameService implements SpellCheckListener{
             throw new RuntimeException("Failed to initialize GameService: unable to load word file", e);
         }
     }
+
+    public void startNextPrompt(String gameCode) {
+        Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
+        if (gameOpt.isPresent()) {
+            Game game = gameOpt.get();
+            int currentPromptIndex = game.getCurrentPromptIndex();
+            if (currentPromptIndex < game.getCurrentPrompts().length - 1) {
+                game.setCurrentPromptIndex(currentPromptIndex + 1);
+                gameRepository.save(game);
+            } else {
+                startRound(gameCode);
+            }
+        }
+    }
     
     public boolean isResponseValid(String response, String requiredLetter){
         //Step 1: Tokenize and remove articles

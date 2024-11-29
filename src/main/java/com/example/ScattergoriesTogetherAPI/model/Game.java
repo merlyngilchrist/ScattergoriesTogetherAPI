@@ -14,6 +14,7 @@ public class Game {
 
     private String gameCode;
     private int currentRound = 1;
+    private int currentPromptIndex;
     private String currentLetter;
     private String hostUsername;
     private String status;
@@ -28,7 +29,8 @@ public class Game {
         this.gameCode = gameCode;
         this.hostUsername = hostUsername;
         this.status = "LOBBY";
-        this.currentRound = 0;
+        this.currentRound = 1;
+        this.currentPromptIndex = 0;
         this.currentLetter = "";
         this.currentPrompts = new String[12];
         this.responses = new ArrayList<Response>();
@@ -108,6 +110,14 @@ public class Game {
 
     public void setResponses(List<Response> responses) {
         this.responses = responses;
+    }
+
+    public int getCurrentPromptIndex() {
+        return currentPromptIndex;
+    }
+
+    public void setCurrentPromptIndex(int currentPromptIndex) {
+        this.currentPromptIndex = currentPromptIndex;
     }
     
     

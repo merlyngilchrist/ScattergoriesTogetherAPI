@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ScattergoriesTogetherAPI.model.Game;
+import com.example.ScattergoriesTogetherAPI.model.Response;
 import com.example.ScattergoriesTogetherAPI.repository.GameRepository;
+import com.example.ScattergoriesTogetherAPI.repository.ResponseRepository;
 import com.example.ScattergoriesTogetherAPI.service.GameService;
 
 @RestController
@@ -30,6 +32,9 @@ public class GameRestController {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private ResponseRepository responseRepository;
 
     @GetMapping("/{gameCode}")
     public ResponseEntity<?> getGameDetails(@PathVariable String gameCode){
@@ -113,6 +118,49 @@ public class GameRestController {
         Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
         Game game = gameOpt.get();
         gameService.endGame(game);
+    }
+
+    @GetMapping("/{gameCode}/round/{round}/prompt/{promptText}/responses")
+    public ResponseEntity<?> getResponsesForPrompt(@PathVariable String gameCode, @PathVariable int round, @PathVariable String promptText) {
+        try {
+            Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
+            if (gameOpt.isPresent()) {
+                Game game = gameOpt.get();
+                List<Response> responses = responseRepository.findByGameIdAndRoundAndPromptText(game.getId(), round, promptText);
+                return ResponseEntity.ok(responses);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Game not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{gameCode}/responses/{responseId}/validate")
+    public ResponseEntity<?> validateResponse(@PathVariable String gameCode, @PathVariable String responseId, @RequestParam boolean isValid){
+        try {
+            Optional<Response> responseOpt = responseRepository.findById(responseId);
+            if (responseOpt.isPresent()){
+                Response response = responseOpt.get();
+                response.setValid(isValid);
+                responseRepository.save(response);
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Response not found.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{gameCode}/nextPrompt")
+    public ResponseEntity<?> nextPrompt(@PathVariable String gameCode) {
+        try {
+            gameService.startNextPrompt(gameCode);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
     
 }
