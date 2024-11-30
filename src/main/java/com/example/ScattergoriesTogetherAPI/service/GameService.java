@@ -327,7 +327,7 @@ public class GameService implements SpellCheckListener{
         return scores;
     }
 
-    public void endGame(Game gameOpt){
+    public Map<String, Object> endGame(Game gameOpt){
         gameOpt.setStatus("COMPLETED");
         Map<String, Integer> totalScores = new HashMap<>();
 
@@ -343,23 +343,39 @@ public class GameService implements SpellCheckListener{
         List<Map.Entry<String, Integer>> sortedScores = new ArrayList<>(totalScores.entrySet());
         sortedScores.sort((a, b) -> b.getValue() - a.getValue());
 
-        //Update each user's stats
-        for(int i = 0; i < sortedScores.size(); i++){
+        // Prepare the leaderboard
+        List<Map<String, Object>> leaderboard = new ArrayList<>();
+        for (int i = 0; i < sortedScores.size(); i++){
             String username = sortedScores.get(i).getKey();
             int score = sortedScores.get(i).getValue();
-            if (i == 0) {
+
+            leaderboard.add(Map.of(
+                "username", username,
+                "score", score,
+                "rank", i + 1
+            ));
+
+            // Update user stats
+            if (i == 0){
                 userRepository.incrementGamesWon(username);
             }
 
-            //Update high scores if applicable
+            // Update high scores if applicable
             Optional<User> userOpt = userRepository.findByUsername(username);
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
-                user.setRecordScore(Math.max(user.getRecordScore(), score));
+                user.setRecordScore(Math.max((user.getRecordScore()), score));
                 userRepository.save(user);
             }
         }
+
         gameRepository.save(gameOpt);
+
+        // Return game status and leaderboard
+        return Map.of(
+            "status", "COMPLETED",
+            "leaderboard", leaderboard
+        );
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.ScattergoriesTogetherAPI.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,10 +115,16 @@ public class GameRestController {
     }
 
     @PostMapping("/{gameCode}/end")
-    public void endGame(@PathVariable String gameCode){
+    public ResponseEntity<?> endGame(@PathVariable String gameCode){
         Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
+        if (gameOpt.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
         Game game = gameOpt.get();
-        gameService.endGame(game);
+        Map<String, Object> result = gameService.endGame(game);
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{gameCode}/round/{round}/prompt/{promptText}/responses")
