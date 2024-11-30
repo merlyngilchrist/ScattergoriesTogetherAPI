@@ -13,7 +13,7 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry){
-                registry.addMapping("/**").allowedOrigins("romacosta.github.io").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS"); //Adjust for frontend's URL
+                registry.addMapping("/**").allowedOrigins("https://romacosta.github.io").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*").allowCredentials(true); //Adjust for frontend's URL
             }
         };
     }
