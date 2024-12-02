@@ -1,10 +1,7 @@
 package com.example.ScattergoriesTogetherAPI.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
-
-import com.example.ScattergoriesTogetherAPI.controller.GameWebSockerController;
 
 @Configuration
 @EnableWebSocket
