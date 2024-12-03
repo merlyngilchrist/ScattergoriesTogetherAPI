@@ -128,7 +128,7 @@ public class GameRestController {
             return ResponseEntity.ok(savedResponses);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while saving responses.")
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while saving responses.");
         }
     }
 
