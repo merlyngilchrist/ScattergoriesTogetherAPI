@@ -1,5 +1,6 @@
 package com.example.ScattergoriesTogetherAPI.controller;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -157,10 +158,11 @@ public class GameRestController {
     @GetMapping("/{gameCode}/round/{round}/prompt/{promptText}/responses")
     public ResponseEntity<?> getResponsesForPrompt(@PathVariable String gameCode, @PathVariable int round, @PathVariable String promptText) {
         try {
+            String decodedPromptText = URLDecoder.decode(promptText, "UTF-8");
             Optional<Game> gameOpt = gameRepository.findByGameCode(gameCode);
             if (gameOpt.isPresent()) {
                 Game game = gameOpt.get();
-                List<Response> responses = responseRepository.findByGameIdAndRoundAndPromptText(game.getId(), round, promptText);
+                List<Response> responses = responseRepository.findByGameIdAndRoundAndPromptText(gameCode, round, decodedPromptText);
                 return ResponseEntity.ok(responses);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Game not found");
