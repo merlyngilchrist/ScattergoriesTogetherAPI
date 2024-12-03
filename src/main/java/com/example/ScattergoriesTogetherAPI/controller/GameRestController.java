@@ -118,7 +118,7 @@ public class GameRestController {
                     return ResponseEntity.badRequest().body("Prompt Text is required for each response");
                 }
 
-                if (response.getRound() == 0) {
+                if (response.getRound() <= 0) {
                     response.setRound(1);
                 }
 
