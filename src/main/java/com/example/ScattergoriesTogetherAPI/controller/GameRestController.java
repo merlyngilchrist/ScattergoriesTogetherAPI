@@ -105,8 +105,31 @@ public class GameRestController {
     }
 
     @PostMapping("/{gameCode}/submitResponse")
-    public void submitResponse(@PathVariable String gameCode, @RequestParam String username, @RequestParam String promptText, @RequestParam String answer){
-        gameService.submitResponse(gameCode, username, promptText, answer);
+    public ResponseEntity<?> submitResponse(@PathVariable String gameCode, @RequestBody List<Response> responses){
+        try {
+            for (Response response : responses) {
+                if (response.getGameId() == null || !response.getGameId().equals(gameCode)) {
+                    return ResponseEntity.badRequest().body("Invalid Game Id in one or more responses.");
+                }
+                if (response.getUserId() == null || response.getUserId().isEmpty()) {
+                    return ResponseEntity.badRequest().body("User Id is required for each response.");
+                }
+                if (response.getPromptText() == null || response.getPromptText().isEmpty()) {
+                    return ResponseEntity.badRequest().body("Prompt Text is required for each response");
+                }
+
+                if (response.getRound() == 0) {
+                    response.setRound(1);
+                }
+            }
+
+            List<Response> savedResponses = responseRepository.saveAll(responses);
+
+            return ResponseEntity.ok(savedResponses);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while saving responses.")
+        }
     }
 
     @GetMapping("/{gameCode}/scores")
