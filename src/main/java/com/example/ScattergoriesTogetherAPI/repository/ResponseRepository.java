@@ -11,6 +11,6 @@ public interface ResponseRepository extends MongoRepository<Response, String>{
 
     List<Response> findByGameIdAndRound(String gameId, int round);
 
-    @Query("{'gameId': ?0, 'round': ?1, 'promptText': { &regex: ?2, $options: 'i' }}")
+    @Query("{'gameId': ?0, 'round': ?1, 'promptText': ?2}")
     List<Response> findByGameIdAndRoundAndPromptText(String gameId, int round, String promptText);
 } 
