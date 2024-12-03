@@ -121,6 +121,10 @@ public class GameRestController {
                 if (response.getRound() == 0) {
                     response.setRound(1);
                 }
+
+                if (response.getAnswer() == null || response.getAnswer().trim().isEmpty()) {
+                    response.setAnswer("");
+                }
             }
 
             List<Response> savedResponses = responseRepository.saveAll(responses);
